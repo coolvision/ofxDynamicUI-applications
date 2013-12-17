@@ -109,6 +109,10 @@ void Patch::update() {
 
             } else {
                 unresponsive_i++;
+
+                if (unresponsive_i > 1) {
+                    status = UNRESPONSIVE;
+                }
             }
             zmq_msg_close(&msg);
         }
