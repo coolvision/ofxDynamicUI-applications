@@ -23,46 +23,49 @@ void ButtonPatch::draw() {
 
     ofPushStyle();
 
+    //ofDisableAntiAliasing();
+    //ofDisableSmoothing();
+
     bool mouse_over = isMouseOver();
 
     // draw the rectangle
-    ofSetRectMode (OF_RECTMODE_CORNER);
-    ofSetLineWidth(1.0f);
-
+//    ofSetRectMode (OF_RECTMODE_CORNER);
+//    ofSetLineWidth(1.0f);
+//
     ofFill();
-    if (mouse_over) {
-        ofSetColor(hover_color);
-    } else {
-        ofSetColor(color);
-    }
+//    if (mouse_over) {
+//        ofSetColor(hover_color);
+//    } else {
+    ofSetColor(color);
+//    }
     ofRect(x, y, width, height);
 
-    ofFill();
-    ofSetColor(text_color / 2.0f);
-    ofRect(x, y, height, height);
 
-    ofNoFill();
-    if (mouse_over) {
-        ofSetColor(hover_border_color);
-    } else {
-        ofSetColor(border_color);
-    }
-    ofRect(x, y, width, height);
+    ofFill();
+    ofSetColor(ofColor(150));
+    //ofRect(x, y, height, height);
+
+//    ofNoFill();
+//    if (mouse_over) {
+//        ofSetColor(hover_border_color);
+//    } else {
+//        ofSetColor(border_color);
+//    }
+//    ofRect(x, y, width, height);
 
     // and the text!
-    if (mouse_over) {
-        ofSetColor(hover_text_color);
-    } else {
+//    if (mouse_over) {
+//        ofSetColor(hover_text_color);
+//    } else {
         ofSetColor(text_color);
-    }
+//    }
 
-    font.draw(label, 16, (int) (x + 5 + height), (int) (y + 15));
 
-    ofRectangle b = labels_font_m.getStringBoundingBox(label,
-            (int) (x + 5 + height), (int) (y + 15));
-    if (b.width > width - 50) {
-        width = b.width + 50;
-    }
+
+    font.draw(label, 16, (int) (x + 5), (int) y + height - 7);
+
+    //ofDrawBitmapString(label, (int) (x + 5 + height), (int) y + height / 2 + 5);
+
 
 //    ofFill();
 //    ofSetColor(text_color);

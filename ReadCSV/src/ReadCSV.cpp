@@ -10,6 +10,15 @@ void ReadCSV::setup() {
 
     // ConnectedApp
     initConnection("ReadCSV.app");
+
+
+    ports.push_back(new Port("test_in1", Port::INPUT));
+    ports.push_back(new Port("test_in2", Port::INPUT));
+    ports.push_back(new Port("test_in3", Port::INPUT));
+
+    ports.push_back(new Port("test_out1", Port::OUTPUT));
+    ports.push_back(new Port("test_out2", Port::OUTPUT));
+    ports.push_back(new Port("test_out3", Port::OUTPUT));
 }
 
 //--------------------------------------------------------------

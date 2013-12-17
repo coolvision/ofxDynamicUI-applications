@@ -22,7 +22,7 @@ public:
     ~Composition();
 
     static void *context;
-    void *requester; // mostly for testing
+    //void *requester; // mostly for testing
 
     void *name_server; // for getting
     static int name_i;

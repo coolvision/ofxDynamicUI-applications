@@ -28,8 +28,15 @@ void Composition::exit() {
 
     cout << "Composition::exit" << endl;
 
-    zmq_close(requester);
-    //zmq_ctx_destroy(context);
+    //zmq_close(requester);
+    zmq_close(name_server);
+    for (int i = 0; i < patches.size(); i++) {
+        if (patches[i]->client != NULL) {
+            zmq_close(patches[i]->client);
+        }
+    }
+
+//    zmq_ctx_destroy(context);
 }
 
 void Composition::setup() {
@@ -40,7 +47,7 @@ void Composition::setup() {
     name = "Test";
 
     // ui layout settings
-    button_h = 20;
+    button_h = 25;
     button_w = 175;
     margin_top = 20;
     margin_left = 20;
@@ -82,7 +89,7 @@ void Composition::setup() {
     ofDisableAntiAliasing();
     ofDisableSmoothing();
 
-    Patch::font.setup("UbuntuMono-R.ttf");
+    Patch::font.setup("DejaVuSansMono.ttf");
 
     // make a fixed app
     string app_name = "ReadCSV.app";
@@ -101,8 +108,8 @@ void Composition::setup() {
     ofAddListener(b->click_event, this, &Composition::openApp);
 
     // common socket, mostly just for testing
-    requester = zmq_socket(context, ZMQ_REQ);
-    zmq_connect(requester, "ipc:///tmp/0");
+//    requester = zmq_socket(context, ZMQ_REQ);
+//    zmq_connect(requester, "ipc:///tmp/0");
 
     name_server = zmq_socket(context, ZMQ_REP);
     zmq_bind(name_server, "ipc:///tmp/name");
@@ -111,18 +118,18 @@ void Composition::setup() {
 void Composition::update() {
 
     // mostly just dbeugging and testing
-    zmq_msg_t msg;
-    zmq_msg_init(&msg);
-    if (zmq_msg_recv(&msg, requester, ZMQ_DONTWAIT) != -1) {
-        Message m(&msg);
-    }
-    zmq_msg_close(&msg);
+//    zmq_msg_t msg;
+//    zmq_msg_init(&msg);
+//    if (zmq_msg_recv(&msg, requester, ZMQ_DONTWAIT) != -1) {
+//        Message m(&msg);
+//    }
+//    zmq_msg_close(&msg);
 
     // reply to name requests
     zmq_msg_t name_msg;
     zmq_msg_init(&name_msg);
     if (zmq_msg_recv(&name_msg, name_server, ZMQ_DONTWAIT) != -1) {
-        cout << "reply to name request " <<  name_i << endl;
+        cout << "reply to name request " << name_i << endl;
         Message m(&name_msg);
         Message out_m(ofToString(name_i));
         out_m.send(name_server);
@@ -142,12 +149,17 @@ void Composition::addButton(string &s) {
 
     msg_n++;
 
-    // make a message object
-    Message m("test");
-    m.addValue("Hello");
-    m.addValue("message");
-    m.addIntValue(msg_n);
-    m.send(requester);
+//    // make a message object
+//    Message m("test");
+//    m.addValue("Hello");
+//    m.addValue("message");
+//    m.addIntValue(msg_n);
+//    m.send(requester);
+
+    // add a draggable button to the canvas
+    patches.push_back(
+                      new ButtonPatch("button", ofGetWindowWidth() / 2 + ofRandom(0, 100),
+                                      ofGetWindowHeight() / 2 + ofRandom(0, 100), 175, 25));
 
 }
 
@@ -188,16 +200,14 @@ void Composition::openApp(string &s) {
     cout << "command: " << command << endl;
     cout << "r: " << r << endl;
 
-    patches.push_back(
-            new AppPatch(s, path, ofGetWindowWidth() / 2 + ofRandom(0, 100),
-                    ofGetWindowHeight() / 2 + ofRandom(0, 100), 200, 100));
+    patches.push_back(new AppPatch(s, path, 250, 50 + name_i * 150, 200, 100));
 
 }
 
 void Composition::draw() {
 
     // background
-    ofBackground(50, 50, 50);
+    ofBackground(220);
 
     Patch::font.draw("FPS: " + ofToString(ofGetFrameRate()), 16,
             ofGetWindowWidth() - 100, 20);

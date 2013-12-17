@@ -26,6 +26,8 @@ AppPatch::AppPatch(string name_in, string path, int x, int y, int width,
     zmq_connect(client, address.str.c_str());
 
     status = NOT_RUNNING;
+
+    ports_queried = false;
 }
 
 AppPatch::~AppPatch() {
@@ -45,16 +47,33 @@ bool AppPatch::requestFromApp() {
 
 void AppPatch::draw() {
 
-    ofNoFill();
+    ofFill();
+    ofSetColor(color);
+    ofRect(x, y, width, height);
 
+    ofNoFill();
     if (status == UNRESPONSIVE) {
         ofSetColor(ofColor::red);
-    } else {
-        ofSetColor(border_color);
+        ofRect(x, y, width, height);
     }
-    ofRect(x, y, width, height);
+
 
     ofSetColor(text_color);
     font.draw(name + " - " + address.str, 16, (int) (x + 5), (int) (y - 3));
+
+
+    for (int i = 0; i < ports.size(); i++) {
+
+        ofRectangle r = font.getBBox(ports[i]->name, 16, (int) (x + 10), (int) (y + 20 + 20 * i));
+
+        ofSetColor(ofColor::black);
+        ofNoFill();
+        ofRect(r);
+
+        font.draw(ports[i]->name, 16, (int) (x + 10), (int) (y + 20 + 20 * i));
+    }
+
+
+
 }
 

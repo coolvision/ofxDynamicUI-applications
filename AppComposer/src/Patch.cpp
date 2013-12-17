@@ -26,8 +26,10 @@ Patch::Patch() {
 
     border_color.set(200.0f);
     hover_border_color.set(200.0f);
-    color.set(50.0f);
-    text_color.set(200.0f);
+
+    color.set(255.0f);
+    text_color.set(0);
+
     hover_color.set(50.0f);
     hover_text_color.set(ofColor::lightSteelBlue);
 
@@ -68,17 +70,50 @@ void Patch::update() {
                 Message m(&msg);
                 status = RESPONSIVE;
                 unresponsive_i = 0;
+
+                if (!ports_queried) {
+
+                    Message in("input_ports");
+                    in.send(client);
+                    cout << "query input ports" << endl;
+                    zmq_msg_t in_msg;
+                    zmq_msg_init(&in_msg);
+                    if (zmq_msg_recv(&in_msg, client, 0) != -1) {
+                        Message m(&in_msg);
+
+                        for (int i = 0; i < m.string_v.size(); i++) {
+                            ports.push_back(
+                                    new Port(m.string_v[i], Port::INPUT));
+                        }
+
+                    }
+                    zmq_msg_close(&in_msg);
+
+                    Message out("output_ports");
+                    out.send(client);
+                    cout << "query output ports" << endl;
+                    zmq_msg_t out_msg;
+                    zmq_msg_init(&out_msg);
+                    if (zmq_msg_recv(&out_msg, client, 0) != -1) {
+                        Message m(&out_msg);
+
+                        for (int i = 0; i < m.string_v.size(); i++) {
+                            ports.push_back(
+                                    new Port(m.string_v[i], Port::OUTPUT));
+                        }
+                    }
+                    zmq_msg_close(&out_msg);
+
+                    ports_queried = true;
+                }
+
             } else {
                 unresponsive_i++;
             }
             zmq_msg_close(&msg);
-
-            if (unresponsive_i > 1) {
-               status = UNRESPONSIVE;
-            }
         }
-
     }
+
 }
 
 void Patch::onPress(int x, int y, int button) {

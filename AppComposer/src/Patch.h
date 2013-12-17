@@ -25,6 +25,11 @@ enum AppStatus {
     RESPONSIVE = 0, UNRESPONSIVE, NOT_RUNNING,
 };
 
+enum PatchType {
+    APPLICARION_PATCH = 0,
+    UI_PATCH
+};
+
 // base patch: can be connected to other patches
 class Patch: public ofxMSAInteractiveObject {
 public:
@@ -64,6 +69,8 @@ public:
     // events
     ofEvent<string> click_event;
 
+    bool ports_queried;
+
     // ports should be queried from the app
     vector<Port *> ports;
     vector<Connection *> connections;
@@ -81,7 +88,7 @@ public:
 
     // update connections with other patches
     // move from the outbox to the inboxes of connected patches
-    virtual void update();
+    void update();
 };
 
 // visual block representation of an application
