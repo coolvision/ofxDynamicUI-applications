@@ -26,8 +26,10 @@ enum AppStatus {
 };
 
 enum PatchType {
-    APPLICARION_PATCH = 0,
-    UI_PATCH
+    PATCH = 0,
+    UI_BUTTON,
+    UI_FIXED_BUTTON,
+    UI_SLIDER
 };
 
 // base patch: can be connected to other patches
@@ -43,7 +45,6 @@ public:
     int uid; // used for referencing, can be an index in the patches array
 
     // gui
-    virtual void draw();
     void onPress(int x, int y, int button);
     void onDragOver(int x, int y, int button);
     void onDragOutside(int x, int y, int button);
@@ -91,6 +92,15 @@ public:
     // update connections with other patches
     // move from the outbox to the inboxes of connected patches
     void update();
+
+    string name;
+    Address address; // ip, of some MQ address
+
+    void drawButton();
+    void drawFixedButton();
+    void drawPatch() {
+    void portsSize();
+    void drawPorts();
 };
 
 // visual block representation of an application
@@ -99,21 +109,6 @@ public:
 
     AppPatch(string name_in, string path, int x, int y, int width, int height);
     ~AppPatch();
-
-    // App
-    string name;
-    string path; // local FS path
-    uint32_t pid; // can monitor the process?
-    Address address; // ip, of some MQ address
-
-    bool open(string path); // initialize connected app
-
-    // communicate to the app, update message queues
-    bool sendToApp();
-    bool receiveFromApp();
-    bool requestFromApp();
-
-    void draw();
 };
 
 // buttons used for the toolbox
@@ -121,6 +116,4 @@ class ButtonPatch: public Patch {
 public:
     ButtonPatch(string label, int x, int y, int w, int h);
     ~ButtonPatch();
-
-    void draw();
 };

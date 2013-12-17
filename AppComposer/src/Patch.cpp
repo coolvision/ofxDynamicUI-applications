@@ -50,6 +50,133 @@ void Patch::setDraggable(bool d) {
     this->draggable = d;
 }
 
+void Patch::drawButton() {
+    
+    ofPushStyle();
+
+    ofFill();
+    ofSetColor(color);
+    ofRect(x, y, width, height);
+
+    darwPorts();
+
+    ofPopStyle();
+}
+
+void Patch::drawFixedButton() {
+
+    ofPushStyle();
+
+    ofFill();
+    ofSetColor(color);
+    ofRect(x, y, width, height);
+
+    ofSetColor(text_color);
+    font.draw(label, 16, (int) (x + 5), (int) y + height - 7);
+
+    ofPopStyle();
+}
+
+void Patch::drawPatch() {
+
+    ofPushStyle();
+
+    portsSize();
+
+    ofSetColor(text_color);
+    font.draw(name + " - " + address.str, 16, (int) (x + 5), (int) (y - 3));
+
+    ofFill();
+
+    if (status == UNRESPONSIVE) {
+        ofSetColor(ofColor::gray);
+    } else {
+        ofSetColor(color);
+    }
+    ofRect(x, y, width, height);
+
+    drawPorts();
+
+    ofPopStyle();
+}
+
+void Patch::portsSize() {
+
+    float max_w_in = -1.0f;
+    float max_w_out = -1.0f;
+    float max_y = -1.0f;
+
+    ofSetColor(ofColor::black);
+    ofNoFill();
+    for (int i = 0; i < ports_in.size(); i++) {
+
+        ofRectangle r = font.getBBox(ports_in[i]->name, 16, (int) (x + 10),
+                                     (int) (y + 20 + 20 * i));
+
+        ports_in[i]->r = r;
+
+        if (r.width > max_w_in) {
+            max_w_in = r.width;
+        }
+        if (r.getMaxY() > max_y) {
+            max_y = r.getMaxY();
+        }
+    }
+
+    for (int i = 0; i < ports_out.size(); i++) {
+
+        ofRectangle r = font.getBBox(ports_out[i]->name, 16, (int) (x + 10 + width - 100),
+                                     (int) (y + 20 + 20 * i));
+
+        ports_out[i]->r = r;
+
+        if (r.width > max_w_out) {
+            max_w_out = r.width;
+        }
+        if (r.getMaxY() > max_y) {
+            max_y = r.getMaxY();
+        }
+    }
+
+    if (max_y > 0.0f) {
+        height = max_y - y + 10;
+    }
+
+}
+
+void Patch::drawPorts() {
+
+    for (int i = 0; i < ports_in.size(); i++) {
+        ofSetColor(ofColor::black);
+        ofNoFill();
+        Patch::font.draw(ports_in[i]->name, 16, (int) (x + 10),
+                         (int) (y + 20 + 20 * i));
+        //ofRect(ports_in[i]->r);
+
+        ofRectangle socket = ports_in[i]->r;
+        socket.x = x;
+        socket.width = 5;
+        ofFill();
+        ofSetColor(ofColor::orange);
+        ofRect(socket);
+    }
+
+    for (int i = 0; i < ports_out.size(); i++) {
+        ofSetColor(ofColor::black);
+        ofNoFill();
+        font.draw(ports_out[i]->name, 16, (int) (x + width - ports_out[i]->r.width - 10),
+                  (int) (y + 20 + 20 * i));
+        //ofRect(ports_out[i]->r);
+
+        ofRectangle socket = ports_out[i]->r;
+        socket.x = x + width - 5;
+        socket.width = 5;
+        ofFill();
+        ofSetColor(ofColor::orange);
+        ofRect(socket);
+    }
+}
+
 void Patch::update() {
 
     update_i++;
