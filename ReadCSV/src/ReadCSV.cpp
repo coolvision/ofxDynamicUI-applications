@@ -12,13 +12,14 @@ void ReadCSV::setup() {
     initConnection("ReadCSV.app");
 
 
-    ports.push_back(new Port("test_in1", Port::INPUT));
-    ports.push_back(new Port("test_in2", Port::INPUT));
-    ports.push_back(new Port("test_in3", Port::INPUT));
+    ports_in.push_back(new Port("test_in1", Port::INPUT));
+    ports_in.push_back(new Port("test_in2", Port::INPUT));
+    ports_in.push_back(new Port("test_in3", Port::INPUT));
+    ports_in.push_back(new Port("test_in4", Port::INPUT));
 
-    ports.push_back(new Port("test_out1", Port::OUTPUT));
-    ports.push_back(new Port("test_out2", Port::OUTPUT));
-    ports.push_back(new Port("test_out3", Port::OUTPUT));
+    ports_out.push_back(new Port("test_out1", Port::OUTPUT));
+    ports_out.push_back(new Port("test2", Port::OUTPUT));
+    ports_out.push_back(new Port("out3", Port::OUTPUT));
 }
 
 //--------------------------------------------------------------

@@ -72,7 +72,9 @@ public:
     bool ports_queried;
 
     // ports should be queried from the app
-    vector<Port *> ports;
+    vector<Port *> ports_in;
+    vector<Port *> ports_out;
+
     vector<Connection *> connections;
 
     // local message queues

@@ -82,7 +82,7 @@ void Patch::update() {
                         Message m(&in_msg);
 
                         for (int i = 0; i < m.string_v.size(); i++) {
-                            ports.push_back(
+                            ports_in.push_back(
                                     new Port(m.string_v[i], Port::INPUT));
                         }
 
@@ -98,7 +98,7 @@ void Patch::update() {
                         Message m(&out_msg);
 
                         for (int i = 0; i < m.string_v.size(); i++) {
-                            ports.push_back(
+                            ports_out.push_back(
                                     new Port(m.string_v[i], Port::OUTPUT));
                         }
                     }
