@@ -16,9 +16,9 @@
 
 class Connection {
 public:
-    int to_uid; // "from" patch owns the object
-    int from_port_id;
-    int to_port_id;
+    Connection(Port *from_in, Port *to_in): from(from_in), to(to_in) {};
+    Port *from;
+    Port *to;
 };
 
 enum AppStatus {
@@ -64,7 +64,7 @@ public:
     bool port_connect;
     bool port_hover;
     ofPoint line_start;
-
+    Port *hover_port;
 
     // visual stuff
     ofColor border_color;

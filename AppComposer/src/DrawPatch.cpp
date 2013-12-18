@@ -15,15 +15,23 @@ void Patch::draw() {
         hover = false;
     }
 
+    ofPushStyle();
+    ofSetColor(150.0f);
+    ofEnableSmoothing();
+    ofEnableAntiAliasing();
+    ofSetLineWidth(2.0f);
+
     if (port_connect) {
-        ofPushStyle();
-        ofSetColor(50.0f);
-        ofEnableSmoothing();
-        ofEnableAntiAliasing();
-        ofSetLineWidth(2.0f);
         ofLine(line_start, ofPoint(ofGetMouseX(), ofGetMouseY()));
-        ofPopStyle();
     }
+
+    // also draw all connections
+    for (int i = 0; i < connections.size(); i++) {
+        ofLine(connections[i]->from->cp, connections[i]->to->cp);
+    }
+
+    ofPopStyle();
+
 
     switch (type) {
     case PATCH:
@@ -87,7 +95,8 @@ void Patch::drawPatch() {
     }
 
     ofSetColor(text_color);
-    font.draw(name + " - " + address.str, 16, (int) (x + 5), (int) (y - 3));
+    font.draw(name + " - " + address.str + " - " + ofToString(uid), 16,
+            (int) (x + 5), (int) (y - 3));
 
     ofFill();
 
@@ -151,6 +160,7 @@ void Patch::drawPorts(float off_y) {
     ofPoint mouse(ofGetMouseX(), ofGetMouseY());
 
     port_hover = false;
+    hover_port = NULL;
 
     for (int i = 0; i < ports_in.size(); i++) {
         ofSetColor(ofColor::black);
@@ -167,8 +177,10 @@ void Patch::drawPorts(float off_y) {
         socket.width = 5;
         ofFill();
         if (port_c.inside(mouse)) {
+            hover_port = ports_in[i];
+            ports_in[i]->cp.set(socket.x, socket.y + socket.height / 2);
             port_hover = true;
-            line_start.set(socket.x, socket.y + socket.height / 2);
+            line_start = ports_in[i]->cp;
             ofSetColor(ofColor::red);
         } else {
             ofSetColor(ofColor::orange);
@@ -192,9 +204,11 @@ void Patch::drawPorts(float off_y) {
         socket.width = 5;
         ofFill();
         if (port_c.inside(mouse)) {
-            port_hover = true;
-            line_start.set(socket.x + socket.width,
+            hover_port = ports_out[i];
+            ports_out[i]->cp.set(socket.x + socket.width,
                     socket.y + socket.height / 2);
+            port_hover = true;
+            line_start = ports_out[i]->cp;
             ofSetColor(ofColor::red);
         } else {
             ofSetColor(ofColor::orange);

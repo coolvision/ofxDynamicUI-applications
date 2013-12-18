@@ -14,6 +14,8 @@
 
 void *Composition::context = NULL;
 int Composition::name_i = 0;
+int Composition::patch_id = 0;
+vector<Patch *> Composition::patches;
 
 Composition::Composition() {
 

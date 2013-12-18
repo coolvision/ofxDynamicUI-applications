@@ -33,7 +33,8 @@ public:
     vector<ButtonPatch *> patches_toolbox;
 
     // dynamically created patches
-    vector<Patch *> patches;
+    static int patch_id;
+    static vector<Patch *> patches;
 
     map<string, string> app_paths;
 

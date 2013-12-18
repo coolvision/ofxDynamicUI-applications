@@ -6,6 +6,7 @@
  */
 
 #include "Patch.h"
+#include "Composition.h"
 
 ofTrueTypeFont Patch::labels_font_m;
 ofxFontStash Patch::font;
@@ -41,6 +42,10 @@ Patch::Patch() {
 
     port_connect = false;
     port_hover = false;
+    hover_port = NULL;
+
+    uid = Composition::patch_id;
+    Composition::patch_id++;
 }
 
 Patch::~Patch() {
@@ -100,6 +105,17 @@ void Patch::onReleaseOutside(int x, int y, int button) {
 void Patch::onReleaseAny(int x, int y, int button) {
 
     port_connect = false;
+
+    // look at all other patches
+    for (int i = 0; i < Composition::patches.size(); i++) {
+        Patch *p = Composition::patches[i];
+        if (p->uid != uid) {
+            if (p->port_hover) {
+                connections.push_back(
+                        new Connection(hover_port, p->hover_port));
+            }
+        }
+    }
 }
 
 bool Patch::hitTest(int tx, int ty) {
