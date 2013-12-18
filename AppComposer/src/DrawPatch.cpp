@@ -1,0 +1,205 @@
+/*
+ * DrawPatch.cpp
+ *
+ *  Created on: Dec 18, 2013
+ *      Author: sk
+ */
+
+#include "Patch.h"
+
+void Patch::draw() {
+
+    if (isMouseOver()) {
+        hover = true;
+    } else {
+        hover = false;
+    }
+
+    if (port_connect) {
+        ofPushStyle();
+        ofSetColor(50.0f);
+        ofEnableSmoothing();
+        ofEnableAntiAliasing();
+        ofSetLineWidth(2.0f);
+        ofLine(line_start, ofPoint(ofGetMouseX(), ofGetMouseY()));
+        ofPopStyle();
+    }
+
+    switch (type) {
+    case PATCH:
+        drawPatch();
+        break;
+    case UI_BUTTON:
+        drawButton();
+        break;
+    case UI_FIXED_BUTTON:
+        drawFixedButton();
+        break;
+    };
+}
+
+void Patch::drawButton() {
+
+    ofPushStyle();
+
+    portsSize(height - 8);
+
+    ofFill();
+    ofSetColor(color);
+    if (hover) {
+        ofSetColor(color - ofColor(20));
+    }
+    ofRect(x, y, width, height);
+
+    ofSetColor(150);
+    ofRect(x, y, height, height);
+
+    drawPorts(height - 8);
+
+    ofPopStyle();
+}
+
+void Patch::drawFixedButton() {
+
+    ofPushStyle();
+
+    ofFill();
+    ofSetColor(color);
+    if (hover) {
+        ofSetColor(color - ofColor(20));
+    }
+    ofRect(x, y, width, height);
+
+    ofSetColor(text_color);
+    font.draw(label, 16, (int) (x + 5), (int) y + height - 7);
+
+    ofPopStyle();
+}
+
+void Patch::drawPatch() {
+
+    ofPushStyle();
+
+    portsSize(20);
+
+    if (max_y > 0.0f) {
+        height = max_y - y + 10;
+    }
+
+    ofSetColor(text_color);
+    font.draw(name + " - " + address.str, 16, (int) (x + 5), (int) (y - 3));
+
+    ofFill();
+
+    if (status == UNRESPONSIVE) {
+        ofSetColor(ofColor::gray);
+    } else {
+        ofSetColor(color);
+        if (hover) {
+            ofSetColor(color - ofColor(20));
+        }
+    }
+
+    ofRect(x, y, width, height);
+
+    drawPorts(20);
+
+    ofPopStyle();
+}
+
+void Patch::portsSize(float off_y) {
+
+    max_w_in = -1.0f;
+    max_w_out = -1.0f;
+    max_y = -1.0f;
+
+    ofSetColor(ofColor::black);
+    ofNoFill();
+    for (int i = 0; i < ports_in.size(); i++) {
+
+        ofRectangle r = font.getBBox(ports_in[i]->name, 16, (int) (x + 10),
+                (int) (y + off_y + 20 * i));
+
+        ports_in[i]->r = r;
+
+        if (r.width > max_w_in) {
+            max_w_in = r.width;
+        }
+        if (r.getMaxY() > max_y) {
+            max_y = r.getMaxY();
+        }
+    }
+
+    for (int i = 0; i < ports_out.size(); i++) {
+
+        ofRectangle r = font.getBBox(ports_out[i]->name, 16,
+                (int) (x + 10 + width - 100), (int) (y + off_y + 20 * i));
+
+        ports_out[i]->r = r;
+
+        if (r.width > max_w_out) {
+            max_w_out = r.width;
+        }
+        if (r.getMaxY() > max_y) {
+            max_y = r.getMaxY();
+        }
+    }
+}
+
+void Patch::drawPorts(float off_y) {
+
+    ofPoint mouse(ofGetMouseX(), ofGetMouseY());
+
+    port_hover = false;
+
+    for (int i = 0; i < ports_in.size(); i++) {
+        ofSetColor(ofColor::black);
+        ofNoFill();
+        Patch::font.draw(ports_in[i]->name, 16, (int) (x + 10),
+                (int) (y + off_y + 20 * i));
+        //ofRect(ports_in[i]->r);
+
+        ofRectangle port_c = ports_in[i]->r;
+        port_c.x = x;
+        port_c.width += 10;
+        ofRectangle socket = ports_in[i]->r;
+        socket.x = x;
+        socket.width = 5;
+        ofFill();
+        if (port_c.inside(mouse)) {
+            port_hover = true;
+            line_start.set(socket.x, socket.y + socket.height / 2);
+            ofSetColor(ofColor::red);
+        } else {
+            ofSetColor(ofColor::orange);
+        }
+        ofRect(socket);
+    }
+
+    for (int i = 0; i < ports_out.size(); i++) {
+        ofSetColor(ofColor::black);
+        ofNoFill();
+        font.draw(ports_out[i]->name, 16,
+                (int) (x + width - ports_out[i]->r.width - 10),
+                (int) (y + off_y + 20 * i));
+        //ofRect(ports_out[i]->r);
+
+        ofRectangle port_c = ports_out[i]->r;
+        port_c.x = x + width - ports_out[i]->r.width - 10;
+        port_c.width = ports_out[i]->r.width + 10;
+        ofRectangle socket = ports_out[i]->r;
+        socket.x = x + width - 5;
+        socket.width = 5;
+        ofFill();
+        if (port_c.inside(mouse)) {
+            port_hover = true;
+            line_start.set(socket.x + socket.width,
+                    socket.y + socket.height / 2);
+            ofSetColor(ofColor::red);
+        } else {
+            ofSetColor(ofColor::orange);
+        }
+        ofRect(socket);
+    }
+}
+

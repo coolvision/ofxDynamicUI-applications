@@ -53,11 +53,18 @@ public:
     void onDragUpdate(int x, int y, int button);
     bool hitTest(int tx, int ty);
     void setDraggable(bool d);
+    void onReleaseAny(int x, int y, int button);
 
+    bool hover;
     bool selected;
     bool dragging;
     bool draggable;
     ofPoint drag_start;
+
+    bool port_connect;
+    bool port_hover;
+    ofPoint line_start;
+
 
     // visual stuff
     ofColor border_color;
@@ -93,14 +100,21 @@ public:
     // move from the outbox to the inboxes of connected patches
     void update();
 
+    float max_w_in;
+    float max_w_out;
+    float max_y;
+
+    uint32_t type;
     string name;
+    string path;
     Address address; // ip, of some MQ address
 
+    void draw();
     void drawButton();
     void drawFixedButton();
-    void drawPatch() {
-    void portsSize();
-    void drawPorts();
+    void drawPatch();
+    void portsSize(float off_y);
+    void drawPorts(float off_y);
 };
 
 // visual block representation of an application
@@ -108,12 +122,12 @@ class AppPatch: public Patch {
 public:
 
     AppPatch(string name_in, string path, int x, int y, int width, int height);
-    ~AppPatch();
+    virtual ~AppPatch();
 };
 
 // buttons used for the toolbox
 class ButtonPatch: public Patch {
 public:
     ButtonPatch(string label, int x, int y, int w, int h);
-    ~ButtonPatch();
+    virtual ~ButtonPatch();
 };

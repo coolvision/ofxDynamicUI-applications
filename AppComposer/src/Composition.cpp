@@ -81,6 +81,7 @@ void Composition::setup() {
 
     for (int i = 0; i < patches_toolbox.size(); i++) {
         patches_toolbox[i]->setDraggable(false);
+        patches_toolbox[i]->type = UI_FIXED_BUTTON;
     }
 
     ofAddListener(add_app->click_event, this, &Composition::addApp);
@@ -101,29 +102,18 @@ void Composition::setup() {
                     start_y + inc_y * patches_toolbox.size(), button_w,
                     button_h));
     patches_toolbox.back()->setDraggable(false);
+    patches_toolbox.back()->type = UI_FIXED_BUTTON;
 
     app_paths.insert(pair<string, string>(app_name, app_path));
 
     ButtonPatch *b = patches_toolbox.back();
     ofAddListener(b->click_event, this, &Composition::openApp);
 
-    // common socket, mostly just for testing
-//    requester = zmq_socket(context, ZMQ_REQ);
-//    zmq_connect(requester, "ipc:///tmp/0");
-
     name_server = zmq_socket(context, ZMQ_REP);
     zmq_bind(name_server, "ipc:///tmp/name");
 }
 
 void Composition::update() {
-
-    // mostly just dbeugging and testing
-//    zmq_msg_t msg;
-//    zmq_msg_init(&msg);
-//    if (zmq_msg_recv(&msg, requester, ZMQ_DONTWAIT) != -1) {
-//        Message m(&msg);
-//    }
-//    zmq_msg_close(&msg);
 
     // reply to name requests
     zmq_msg_t name_msg;
@@ -145,20 +135,9 @@ void Composition::update() {
 
 void Composition::addButton(string &s) {
 
-    static int msg_n = 0;
-
-    msg_n++;
-
-//    // make a message object
-//    Message m("test");
-//    m.addValue("Hello");
-//    m.addValue("message");
-//    m.addIntValue(msg_n);
-//    m.send(requester);
-
     // add a draggable button to the canvas
     patches.push_back(
-                      new ButtonPatch("button", ofGetWindowWidth() / 2 + ofRandom(0, 100),
+                      new ButtonPatch("Test button", ofGetWindowWidth() / 2 + ofRandom(0, 100),
                                       ofGetWindowHeight() / 2 + ofRandom(0, 100), 175, 25));
 
 }

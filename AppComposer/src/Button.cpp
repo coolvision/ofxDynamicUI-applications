@@ -16,6 +16,8 @@ ButtonPatch::ButtonPatch(string label, int x, int y, int w, int h) {
     height = h;
 
     ports_out.push_back(new Port(label, Port::OUTPUT));
+
+    type = UI_BUTTON;
 }
 
 ButtonPatch::~ButtonPatch() {

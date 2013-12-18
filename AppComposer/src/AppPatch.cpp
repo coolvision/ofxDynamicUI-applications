@@ -22,12 +22,13 @@ AppPatch::AppPatch(string name_in, string path, int x, int y, int width,
     // use executable name as an address
     client = zmq_socket(Composition::context, ZMQ_REQ);
     address.str = "ipc:///tmp/" + name;
-    cout << "open ping socket" << endl;
     zmq_connect(client, address.str.c_str());
 
     status = NOT_RUNNING;
 
     ports_queried = false;
+
+    type = PATCH;
 }
 
 AppPatch::~AppPatch() {

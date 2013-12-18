@@ -16,6 +16,8 @@
 		53563DD81853C62F002B67BB /* Composition.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53563DD11853C62F002B67BB /* Composition.cpp */; };
 		53563DD91853C62F002B67BB /* Patch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53563DD31853C62F002B67BB /* Patch.cpp */; };
 		53563DDB1853D439002B67BB /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53563DDA1853D439002B67BB /* main.cpp */; };
+		535D5EAE18620327009719B9 /* DrawPatch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 535D5EAC18620327009719B9 /* DrawPatch.cpp */; };
+		535D5EAF18620327009719B9 /* UpdatePatch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 535D5EAD18620327009719B9 /* UpdatePatch.cpp */; };
 		5FAC95FE4AB08A6B355DF44D /* ofxMSAInteractiveObject.cpp~ in Sources */ = {isa = PBXBuildFile; fileRef = 4EC6A8885FFAAC0FE0D59F43 /* ofxMSAInteractiveObject.cpp~ */; };
 		6C0300542FEE6B563A422253 /* ConnectedApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8B7D58D87E8C44666BD01DE7 /* ConnectedApp.cpp */; };
 		7B388D550037229D99E7F52A /* ofxFontStash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D8A535D3474A0EAB684CAC5D /* ofxFontStash.cpp */; };
@@ -86,6 +88,8 @@
 		53563DD31853C62F002B67BB /* Patch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Patch.cpp; sourceTree = "<group>"; };
 		53563DD41853C62F002B67BB /* Patch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Patch.h; sourceTree = "<group>"; };
 		53563DDA1853D439002B67BB /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		535D5EAC18620327009719B9 /* DrawPatch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawPatch.cpp; sourceTree = "<group>"; };
+		535D5EAD18620327009719B9 /* UpdatePatch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UpdatePatch.cpp; sourceTree = "<group>"; };
 		57DF3D9AA2D4AD705F1C3FF0 /* Port.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = Port.cpp; path = ../../../addons/ofxDynamicUI/src/Port.cpp; sourceTree = SOURCE_ROOT; };
 		5CA3E18F617857D6E89C6664 /* zmq_utils.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = zmq_utils.h; path = ../../../addons/ofxDynamicUI/libs/zeromq/include/zmq_utils.h; sourceTree = SOURCE_ROOT; };
 		729655945A30CF3F529572FC /* Message.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = Message.cpp; path = ../../../addons/ofxDynamicUI/src/Message.cpp; sourceTree = SOURCE_ROOT; };
@@ -331,6 +335,8 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				535D5EAC18620327009719B9 /* DrawPatch.cpp */,
+				535D5EAD18620327009719B9 /* UpdatePatch.cpp */,
 				53563DDA1853D439002B67BB /* main.cpp */,
 				53563DCD1853C62E002B67BB /* AppComposer.cpp */,
 				53563DCE1853C62E002B67BB /* AppComposer.h */,
@@ -460,6 +466,7 @@
 				6C0300542FEE6B563A422253 /* ConnectedApp.cpp in Sources */,
 				42AB7B9237A639DD7E3D606E /* Message.cpp in Sources */,
 				28F45C4ED59F474B4817E0B5 /* Port.cpp in Sources */,
+				535D5EAF18620327009719B9 /* UpdatePatch.cpp in Sources */,
 				7B388D550037229D99E7F52A /* ofxFontStash.cpp in Sources */,
 				53563DDB1853D439002B67BB /* main.cpp in Sources */,
 				801397981E78A4CBDE809376 /* fontstash.c in Sources */,
@@ -468,6 +475,7 @@
 				53563DD51853C62F002B67BB /* AppComposer.cpp in Sources */,
 				53563DD81853C62F002B67BB /* Composition.cpp in Sources */,
 				D1395DD979998DCFFA40ACAC /* ofxMSAInteractiveObject.cpp in Sources */,
+				535D5EAE18620327009719B9 /* DrawPatch.cpp in Sources */,
 				53563DD71853C62F002B67BB /* Button.cpp in Sources */,
 				5FAC95FE4AB08A6B355DF44D /* ofxMSAInteractiveObject.cpp~ in Sources */,
 				53563DD91853C62F002B67BB /* Patch.cpp in Sources */,
