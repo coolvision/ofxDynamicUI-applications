@@ -95,9 +95,9 @@ void Composition::setup() {
     Patch::font.setup("DejaVuSansMono.ttf");
 
     // make a fixed app
-    string app_name = "ReadCSV.app";
+    string app_name = "testApp.app";
     string app_path =
-            "/Users/sk/of_v0.8.0_osx_release/apps/myApps/ReadCSV/bin/ReadCSV.app";
+            "/Users/sk/of_v0.8.0_osx_release/apps/myApps/testApp/bin/testApp.app";
 
     patches_toolbox.push_back(
             new ButtonPatch(app_name, margin_left,
@@ -181,7 +181,7 @@ void Composition::openApp(string &s) {
     cout << "command: " << command << endl;
     cout << "r: " << r << endl;
 
-    patches.push_back(new AppPatch(s, path, 250, 50 + name_i * 150, 200, 100));
+    patches.push_back(new AppPatch(s, path, 250, 50 + name_i * 150, 500, 500));
 }
 
 void Composition::draw() {
@@ -189,10 +189,13 @@ void Composition::draw() {
     // background
     ofBackground(220);
 
+    ofPushStyle();
+    ofSetColor(0.0f);
     Patch::font.draw("FPS: " + ofToString(ofGetFrameRate()), 16,
-            ofGetWindowWidth() - 100, 20);
-    Patch::font.draw("Zoom: 100%", 16, ofGetWindowWidth() - 100, 40);
-
+            ofGetWindowWidth() - 130, 20);
+    Patch::font.draw("Zoom: 100%", 16, ofGetWindowWidth() - 130, 40);
+    ofPopStyle();
+    
     // toolbox
     for (int i = 0; i < patches_toolbox.size(); i++) {
         patches_toolbox[i]->draw();

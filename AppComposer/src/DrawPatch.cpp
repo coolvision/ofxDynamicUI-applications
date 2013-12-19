@@ -95,8 +95,12 @@ void Patch::drawPatch() {
     }
 
     ofSetColor(text_color);
-    font.draw(name + " - " + address.str + " - " + ofToString(uid), 16,
+
+    font.draw(name, 16,
             (int) (x + 5), (int) (y - 3));
+
+    font.draw(address.str + " - " + ofToString(uid), 16,
+              (int) (x + 5), (int) (y + height + 14));
 
     ofFill();
 
@@ -160,7 +164,6 @@ void Patch::drawPorts(float off_y) {
     ofPoint mouse(ofGetMouseX(), ofGetMouseY());
 
     port_hover = false;
-    hover_port = NULL;
 
     for (int i = 0; i < ports_in.size(); i++) {
         ofSetColor(ofColor::black);
@@ -171,14 +174,16 @@ void Patch::drawPorts(float off_y) {
 
         ofRectangle port_c = ports_in[i]->r;
         port_c.x = x;
-        port_c.width += 10;
+        port_c.width = 30;
+
         ofRectangle socket = ports_in[i]->r;
         socket.x = x;
         socket.width = 5;
+
+        ports_in[i]->cp.set(socket.x, socket.y + socket.height / 2);
         ofFill();
         if (port_c.inside(mouse)) {
             hover_port = ports_in[i];
-            ports_in[i]->cp.set(socket.x, socket.y + socket.height / 2);
             port_hover = true;
             line_start = ports_in[i]->cp;
             ofSetColor(ofColor::red);
@@ -197,16 +202,18 @@ void Patch::drawPorts(float off_y) {
         //ofRect(ports_out[i]->r);
 
         ofRectangle port_c = ports_out[i]->r;
-        port_c.x = x + width - ports_out[i]->r.width - 10;
-        port_c.width = ports_out[i]->r.width + 10;
+        port_c.x = x + width - 30;
+        port_c.width = 30;
+
         ofRectangle socket = ports_out[i]->r;
         socket.x = x + width - 5;
         socket.width = 5;
+
+        ports_out[i]->cp.set(socket.x + socket.width,
+                socket.y + socket.height / 2);
         ofFill();
         if (port_c.inside(mouse)) {
             hover_port = ports_out[i];
-            ports_out[i]->cp.set(socket.x + socket.width,
-                    socket.y + socket.height / 2);
             port_hover = true;
             line_start = ports_out[i]->cp;
             ofSetColor(ofColor::red);
