@@ -10,7 +10,7 @@ void testApp::setup() {
 
     // ConnectedApp
     initConnection("testApp.app");
-
+    port_number = 5000;
 
     ports_in.push_back(new Port("test_in1", Port::INPUT));
     ports_in.push_back(new Port("test_in2", Port::INPUT));

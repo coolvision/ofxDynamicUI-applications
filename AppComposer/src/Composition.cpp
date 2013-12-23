@@ -181,7 +181,7 @@ void Composition::openApp(string &s) {
     cout << "command: " << command << endl;
     cout << "r: " << r << endl;
 
-    patches.push_back(new AppPatch(s, path, 250, 50 + name_i * 150, 500, 500));
+    patches.push_back(new AppPatch(s, path, 250, 50 + name_i * 150, 200, 100));
 }
 
 void Composition::draw() {
