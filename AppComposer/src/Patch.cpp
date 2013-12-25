@@ -44,6 +44,10 @@ Patch::Patch() {
     port_hover = false;
     hover_port = NULL;
 
+    ports_queried = false;
+    type = PATCH;
+    opened = false;
+
     uid = Composition::patch_id;
     Composition::patch_id++;
 }

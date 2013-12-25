@@ -15,10 +15,13 @@ void Patch::update() {
 
         if (update_i % 30 == 0) {
 
-            Message m("ping");
-            m.addIntValue(ping_i);
-            ping_i++;
-            m.send(client);
+            if (status != UNRESPONSIVE) {
+                Message m("ping");
+                m.addIntValue(ping_i);
+                ping_i++;
+                m.send(client);
+                cout << "send ping to " << address.str << " " << ping_i << endl;
+            }
 
             // check for ping replies
             zmq_msg_t msg;

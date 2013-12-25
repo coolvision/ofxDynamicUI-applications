@@ -50,7 +50,7 @@ void Composition::setup() {
 
     // ui layout settings
     button_h = 25;
-    button_w = 175;
+    button_w = 200;
     margin_top = 20;
     margin_left = 20;
     margin_bottom = 10;
@@ -59,27 +59,17 @@ void Composition::setup() {
     int start_y = margin_top;
     int inc_y = button_h + margin_bottom;
 
-    ButtonPatch *add_app = new ButtonPatch("Add application", margin_left,
+    ButtonPatch *add_app = new ButtonPatch("add application", margin_left,
             start_y, button_w, button_h);
-
-    ButtonPatch *add_button = new ButtonPatch("Add button", margin_left,
-            start_y + inc_y, button_w, button_h);
-
     patches_toolbox.push_back(add_app);
+
+    ButtonPatch *add_button = new ButtonPatch("add button", margin_left,
+            start_y + inc_y, button_w, button_h);
     patches_toolbox.push_back(add_button);
 
-    patches_toolbox.push_back(
-            new ButtonPatch("App1", margin_left, start_y + inc_y * 2, button_w,
-                    button_h));
-    patches_toolbox.push_back(
-            new ButtonPatch("App2", margin_left, start_y + inc_y * 3, button_w,
-                    button_h));
-    patches_toolbox.push_back(
-            new ButtonPatch("App3", margin_left, start_y + inc_y * 4, button_w,
-                    button_h));
-    patches_toolbox.push_back(
-            new ButtonPatch("App4", margin_left, start_y + inc_y * 5, button_w,
-                    button_h));
+    ButtonPatch *add_blank_app = new ButtonPatch("add blank application",
+            margin_left, start_y + inc_y * 2, button_w, button_h);
+    patches_toolbox.push_back(add_blank_app);
 
     for (int i = 0; i < patches_toolbox.size(); i++) {
         patches_toolbox[i]->setDraggable(false);
@@ -88,6 +78,7 @@ void Composition::setup() {
 
     ofAddListener(add_app->click_event, this, &Composition::addApp);
     ofAddListener(add_button->click_event, this, &Composition::addButton);
+    ofAddListener(add_blank_app->click_event, this, &Composition::addBlankApp);
 
     ofDisableAntiAliasing();
     ofDisableSmoothing();
@@ -139,9 +130,20 @@ void Composition::addButton(string &s) {
 
     // add a draggable button to the canvas
     patches.push_back(
-                      new ButtonPatch("Test button", ofGetWindowWidth() / 2 + ofRandom(0, 100),
-                                      ofGetWindowHeight() / 2 + ofRandom(0, 100), 175, 25));
+            new ButtonPatch("test button",
+                    ofGetWindowWidth() / 2 + ofRandom(0, 100),
+                    ofGetWindowHeight() / 2 + ofRandom(0, 100), 175, 25));
 
+}
+
+void Composition::addSlider(string& s) {
+
+}
+
+void Composition::addBlankApp(string &s) {
+
+    patches.push_back(new AppPatch(false, "untitled", "disconnected",
+            250, 50 + name_i * 150, 200, 100));
 }
 
 void Composition::addApp(string &s) {
@@ -181,7 +183,8 @@ void Composition::openApp(string &s) {
     cout << "command: " << command << endl;
     cout << "r: " << r << endl;
 
-    patches.push_back(new AppPatch(s, path, 250, 50 + name_i * 150, 200, 100));
+    patches.push_back(new AppPatch(true,
+                                   s, path, 250, 50 + name_i * 150, 200, 100));
 }
 
 void Composition::draw() {
@@ -195,7 +198,7 @@ void Composition::draw() {
             ofGetWindowWidth() - 130, 20);
     Patch::font.draw("Zoom: 100%", 16, ofGetWindowWidth() - 130, 40);
     ofPopStyle();
-    
+
     // toolbox
     for (int i = 0; i < patches_toolbox.size(); i++) {
         patches_toolbox[i]->draw();

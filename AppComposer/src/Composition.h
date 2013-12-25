@@ -55,4 +55,8 @@ public:
     void addApp(string &s);
     void openApp(string &s);
     void addButton(string &s);
+    void addBlankApp(string &s);
+    void addSlider(string &s);
+
+
 };

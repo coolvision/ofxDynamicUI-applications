@@ -16,7 +16,8 @@
 
 class Connection {
 public:
-    Connection(Port *from_in, Port *to_in): from(from_in), to(to_in) {};
+    Connection(Port *from_in, Port *to_in) :
+            from(from_in), to(to_in) {};
     Port *from;
     Port *to;
 };
@@ -26,10 +27,7 @@ enum AppStatus {
 };
 
 enum PatchType {
-    PATCH = 0,
-    UI_BUTTON,
-    UI_FIXED_BUTTON,
-    UI_SLIDER
+    PATCH = 0, UI_BUTTON, UI_FIXED_BUTTON, UI_SLIDER
 };
 
 // base patch: can be connected to other patches
@@ -51,7 +49,7 @@ public:
     void onRelease(int x, int y, int button);
     void onReleaseOutside(int x, int y, int button);
     void onDragUpdate(int x, int y, int button);
-    bool hitTest(int tx, int ty);
+    virtual bool hitTest(int tx, int ty);
     void setDraggable(bool d);
     void onReleaseAny(int x, int y, int button);
 
@@ -66,13 +64,7 @@ public:
     ofPoint line_start;
     Port *hover_port;
 
-    // visual stuff
-    ofColor border_color;
-    ofColor hover_border_color;
-    ofColor color;
-    ofColor text_color;
-    ofColor hover_color;
-    ofColor hover_text_color;
+
 
     // events
     ofEvent<string> click_event;
@@ -82,12 +74,7 @@ public:
     // ports should be queried from the app
     vector<Port *> ports_in;
     vector<Port *> ports_out;
-
     vector<Connection *> connections;
-
-    // local message queues
-    queue<Message *> inbox;
-    queue<Message *> outbox;
 
     void *client;
     AppStatus status;
@@ -100,14 +87,38 @@ public:
     // move from the outbox to the inboxes of connected patches
     void update();
 
+    uint32_t type;
+    bool opened;
+    bool automatic_address;
+    string name;
+    string path;
+    Address address; // ip, of some MQ address
+
+
+
+
+
+ // ui stuff
+//===================================================
+
+    // captions
+    ofRectangle title_box;
+    ofRectangle address_box;
+
+
+
+    // ports
     float max_w_in;
     float max_w_out;
     float max_y;
 
-    uint32_t type;
-    string name;
-    string path;
-    Address address; // ip, of some MQ address
+    // visual stuff
+    ofColor border_color;
+    ofColor hover_border_color;
+    ofColor color;
+    ofColor text_color;
+    ofColor hover_color;
+    ofColor hover_text_color;
 
     void draw();
     void drawButton();
@@ -121,8 +132,13 @@ public:
 class AppPatch: public Patch {
 public:
 
-    AppPatch(string name_in, string path, int x, int y, int width, int height);
+    AppPatch(bool opened, string name_in, string path, int x, int y, int width,
+            int height);
     virtual ~AppPatch();
+
+    virtual bool hitTest(int tx, int ty);
+
+    void click(string &s);
 };
 
 // buttons used for the toolbox

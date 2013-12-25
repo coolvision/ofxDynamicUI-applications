@@ -86,6 +86,8 @@ void Patch::drawFixedButton() {
 
 void Patch::drawPatch() {
 
+    ofPoint mouse(ofGetMouseX(), ofGetMouseY());
+
     ofPushStyle();
 
     portsSize(20);
@@ -94,12 +96,35 @@ void Patch::drawPatch() {
         height = max_y - y + 10;
     }
 
-    ofSetColor(text_color);
 
-    font.draw(name, 16,
+
+    title_box = font.getBBox(name + " - " + "uid: " + ofToString(uid), 16,
+            (int) (x + 5), (int) (y - 3));
+    title_box.y -= 5;
+    title_box.height += 10;
+
+    if (title_box.inside(mouse)) {
+        ofSetColor(ofColor::steelBlue);
+    } else {
+        ofSetColor(text_color);
+    }
+
+
+    font.draw(name + " - " + "uid: " + ofToString(uid), 16,
             (int) (x + 5), (int) (y - 3));
 
-    font.draw(address.str + " - " + ofToString(uid), 16,
+    address_box = font.getBBox(address.str, 16,
+            (int) (x + 5), (int) (y + height + 14));
+    address_box.y -= 5;
+    address_box.height += 10;
+
+    if (address_box.inside(mouse)) {
+        ofSetColor(ofColor::steelBlue);
+    } else {
+        ofSetColor(text_color);
+    }
+
+    font.draw(address.str, 16,
               (int) (x + 5), (int) (y + height + 14));
 
     ofFill();
@@ -116,6 +141,7 @@ void Patch::drawPatch() {
     ofRect(x, y, width, height);
 
     drawPorts(20);
+
 
     ofPopStyle();
 }
@@ -166,6 +192,7 @@ void Patch::drawPorts(float off_y) {
     port_hover = false;
 
     for (int i = 0; i < ports_in.size(); i++) {
+
         ofSetColor(ofColor::black);
         ofNoFill();
         Patch::font.draw(ports_in[i]->name, 16, (int) (x + 10),
@@ -194,6 +221,7 @@ void Patch::drawPorts(float off_y) {
     }
 
     for (int i = 0; i < ports_out.size(); i++) {
+
         ofSetColor(ofColor::black);
         ofNoFill();
         font.draw(ports_out[i]->name, 16,
